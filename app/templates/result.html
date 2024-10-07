@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Result</title>
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        .result-container {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        .card-custom {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .card-header-custom {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            border-bottom: 1px solid #0069d9;
+        }
+        .card-body-custom {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .list-group-item {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="result-container">
+            <h1 class="text-center mb-4">Detection Results</h1>
+            
+            <p><strong>Number of data in dataset:</strong> {{ num_records }}</p>
+            <p><strong>Number of Comparisons:</strong> {{ comparison }}</p>
+            <p><strong>Total Number of Duplicates:</strong> {{ total_duplicates }}</p>
+
+            <!-- Probable Duplicates Section -->
+            <div class="card card-custom">
+                <div class="card-header card-header-custom">
+                    Probable Duplicates
+                </div>
+                <div class="card-body card-body-custom">
+                    <ul class="list-group">
+                        {% for edit in probable_dup %}
+                            <li class="list-group-item">
+                                {{ loop.index }}. {{ edit[1] }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Exact Duplicates Section -->
+            <div class="card card-custom">
+                <div class="card-header card-header-custom">
+                    Exact Duplicates
+                </div>
+                <div class="card-body card-body-custom">
+                    <ul class="list-group">
+                        {% for duplicate in duplicates %}
+                            <li class="list-group-item">
+                                {{ loop.index }}. {{ duplicate }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="text-center mt-4">
+                <a href="{{ url_for('index') }}" class="btn btn-secondary">Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

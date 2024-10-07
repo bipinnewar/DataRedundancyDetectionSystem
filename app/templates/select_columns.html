@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Columns</title>
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            background-color: #f0f2f5;
+            background-image: url("https://source.unsplash.com/1600x900/?data,technology");
+            background-size: cover;
+            background-position: center;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+        }
+        .form-check {
+            margin-bottom: 15px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+        h1 {
+            color: #007bff;
+        }
+        .error-message {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Select Columns for Redundancy Detection</h1>
+        <form id="columnForm" action="{{ url_for('select_columns') }}" method="post">
+            <div class="form-group">
+                {% for column in columns %}
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="columns" value="{{ column }}" id="{{ column }}">
+                        <label class="form-check-label" for="{{ column }}">
+                            {{ column }}
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="error-message" id="error-message"></div>
+            <div class="form-group text-center">
+                <input type="submit" class="btn btn-primary btn-lg" value="Submit">
+            </div>
+        </form>
+        <div class="text-center mt-3">
+            <a href="{{ url_for('index') }}" class="btn btn-secondary btn-lg">Back to Home</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('columnForm').addEventListener('submit', function(event) {
+            const checkboxes = document.querySelectorAll('input[name="columns"]:checked');
+            const errorMessage = document.getElementById('error-message');
+            errorMessage.textContent = ''; // Clear previous messages
+
+            // Validate that at least one checkbox is checked
+            if (checkboxes.length === 0) {
+                errorMessage.textContent = 'Please select at least one column.';
+                event.preventDefault(); // Prevent form submission
+            }
+        });
+    </script>
+</body>
+</html>

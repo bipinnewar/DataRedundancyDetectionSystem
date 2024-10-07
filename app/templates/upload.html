@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload CSV File</title>
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            background-image: url("https://source.unsplash.com/1600x900/?data,technology");
+            background-size: cover;
+            background-position: center;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+        .text-center {
+            margin-top: 20px;
+        }
+        h1 {
+            color: #007bff;
+        }
+        .error-message {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Upload Your CSV File</h1>
+        <form id="uploadForm" action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="file" class="form-label">Select CSV File</label>
+                <input type="file" class="form-control-file" id="file" name="file" accept=".csv" required>
+                <div id="error-message" class="error-message"></div>
+            </div>
+            <div class="form-group text-center">
+                <input type="submit" class="btn btn-primary btn-lg" value="Upload">
+            </div>
+        </form>
+        <div class="text-center mt-3">
+            <a href="{{ url_for('index') }}" class="btn btn-secondary btn-lg">Back to Home</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(event) {
+            const fileInput = document.getElementById('file');
+            const errorMessage = document.getElementById('error-message');
+            errorMessage.textContent = ''; // Clear previous messages
+
+            const file = fileInput.files[0];
+
+            // Validate file type
+            if (file && file.type !== 'text/csv') {
+                errorMessage.textContent = 'Please upload a valid CSV file.';
+                event.preventDefault(); // Prevent form submission
+                return;
+            }
+
+            // Validate file size (e.g., max 2MB)
+            if (file && file.size > 2 * 1024 * 1024) {
+                errorMessage.textContent = 'File size must be less than 2MB.';
+                event.preventDefault(); // Prevent form submission
+                return;
+            }
+        });
+    </script>
+</body>
+</html>
